@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { Link } from "react-router-dom";
 import useBookApi from "./utils/useBookApi";
 import Book from "./Book";
 
@@ -9,7 +10,9 @@ const Home = () => (
     </div>
     <Content />
     <div className="open-search">
-      <button onClick={() => console.log("pressed")}>Add a book</button>
+      <Link to="/search">
+        <button type="button">Add a book</button>
+      </Link>
     </div>
   </div>
 );
