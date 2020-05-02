@@ -1,35 +1,28 @@
-import React, { useState, useEffect, useCallback } from "react";
-import * as BooksAPI from "./utils/BooksAPI";
+import React, { useCallback } from "react";
+import useBookApi from "./utils/useBookApi";
 import Book from "./Book";
 
-const Home = () => {
-  const [books, setBooks] = useState([]);
-  const [dataChanged, setDataChanged] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () =>
-      BooksAPI.getAll().then((books) => setBooks(books));
-
-    fetchData();
-  }, [dataChanged]);
-
-  return (
-    <div className="list-books">
-      <div className="list-books-title">
-        <h1>MyReads</h1>
-        {console.log(books)}
-      </div>
-      <Content books={books} />
-      <div className="open-search">
-        <button onClick={() => console.log("pressed")}>
-          Add a book
-        </button>
-      </div>
+const Home = () => (
+  <div className="list-books">
+    <div className="list-books-title">
+      <h1>MyReads</h1>
     </div>
-  );
+    <Content />
+    <div className="open-search">
+      <button onClick={() => console.log("pressed")}>Add a book</button>
+    </div>
+  </div>
+);
+
+const bookshelves = {
+  currentlyReading: "Currently Reading",
+  wantToRead: "Want to Read",
+  read: "Read",
 };
 
-const Content = ({ books }) => {
+const Content = () => {
+  const { books, updateBook } = useBookApi();
+
   const bookshelfBooks = useCallback(
     (bookshelf) => books.filter((book) => book.shelf === bookshelf),
     [books]
@@ -38,25 +31,27 @@ const Content = ({ books }) => {
   return (
     <div className="list-books-content">
       <div>
-        <Bookshelf
-          title="Currently Reading"
-          books={bookshelfBooks("currentlyReading")}
-        />
-        <Bookshelf title="Want to Read" books={bookshelfBooks("wantToRead")} />
-        <Bookshelf title="Read" books={bookshelfBooks("read")} />
+        {Object.keys(bookshelves).map((bookshelf) => (
+          <Bookshelf
+            key={bookshelf}
+            title={bookshelves[bookshelf]}
+            books={bookshelfBooks(bookshelf)}
+            onChange={(book, bookshelf) => updateBook(book, bookshelf)}
+          />
+        ))}
       </div>
     </div>
   );
 };
 
-const Bookshelf = ({ title, books }) => (
+const Bookshelf = ({ title, books, onChange }) => (
   <div className="bookshelf">
     <h2 className="bookshelf-title">{title}</h2>
     <div className="bookshelf-books">
       <ol className="books-grid">
         {books.map((book) => (
           <li key={book.id}>
-            <Book data={book} />
+            <Book data={book} onChange={onChange} />
           </li>
         ))}
       </ol>

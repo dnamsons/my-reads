@@ -1,8 +1,8 @@
 import React from "react";
 
-const BookShelfDropdown = () => (
+const BookShelfDropdown = ({ data, onChange }) => (
   <div className="book-shelf-changer">
-    <select>
+    <select value={data.shelf} onChange={(e) => onChange(data, e.target.value)}>
       <option value="move" disabled>
         Move to...
       </option>
@@ -14,7 +14,7 @@ const BookShelfDropdown = () => (
   </div>
 );
 
-const BookTop = ({ data }) => (
+const BookTop = ({ data, onChange }) => (
   <div className="book-top">
     <div
       className="book-cover"
@@ -24,13 +24,13 @@ const BookTop = ({ data }) => (
         backgroundImage: `url("${data.imageLinks.thumbnail}")`,
       }}
     />
-    <BookShelfDropdown />
+    <BookShelfDropdown data={data} onChange={onChange} />
   </div>
 );
 
-const Book = ({ data }) => (
+const Book = ({ data, onChange }) => (
   <div className="book">
-    <BookTop data={data} />
+    <BookTop data={data} onChange={onChange} />
     <div className="book-title">{data.title}</div>
     <div className="book-authors">
       {data.authors.map((author, i) => (
