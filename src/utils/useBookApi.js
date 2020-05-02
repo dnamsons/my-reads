@@ -28,13 +28,24 @@ export const useBookSearchApi = () => {
   const [books, setBooks] = useState([]);
   const [search, setSearch] = useState("");
 
-  const updateBook = (book, bookshelf) => BooksAPI.update(book, bookshelf);
+  const updateBook = async (book, bookshelf) => {
+    const bookListWithUpdatedBook = await BooksAPI.update(book, bookshelf);
+
+    setBooks(
+      books.map((b) =>
+        b.id === book.id ? { ...book, shelf: bookshelf } : { ...b }
+      )
+    );
+  };
 
   useEffect(() => {
     let ignore = false;
 
     const fetchData = async () => {
-      const books = await BooksAPI.search(search);
+      const books = await BooksAPI.search(search).then((books) =>
+        Promise.all(books.map((book) => BooksAPI.get(book.id)))
+      );
+
       if (!ignore) setBooks(books);
     };
 
