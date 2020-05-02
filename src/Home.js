@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
-import useBookApi from "./utils/useBookApi";
+import { useBookApi } from "./utils/useBookApi";
 import Book from "./Book";
 
 const Home = () => (
@@ -17,7 +17,7 @@ const Home = () => (
   </div>
 );
 
-const bookshelves = {
+const BOOKSHELVES = {
   currentlyReading: "Currently Reading",
   wantToRead: "Want to Read",
   read: "Read",
@@ -34,12 +34,12 @@ const Content = () => {
   return (
     <div className="list-books-content">
       <div>
-        {Object.keys(bookshelves).map((bookshelf) => (
+        {Object.keys(BOOKSHELVES).map((bookshelf) => (
           <Bookshelf
             key={bookshelf}
-            title={bookshelves[bookshelf]}
+            title={BOOKSHELVES[bookshelf]}
             books={bookshelfBooks(bookshelf)}
-            onChange={(book, bookshelf) => updateBook(book, bookshelf)}
+            onChange={updateBook}
           />
         ))}
       </div>

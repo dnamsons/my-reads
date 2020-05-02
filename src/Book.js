@@ -2,7 +2,7 @@ import React from "react";
 
 const BookShelfDropdown = ({ data, onChange }) => (
   <div className="book-shelf-changer">
-    <select value={data.shelf} onChange={(e) => onChange(data, e.target.value)}>
+    <select value={data.shelf || "none"} onChange={(e) => onChange(data, e.target.value)}>
       <option value="move" disabled>
         Move to...
       </option>
@@ -33,7 +33,7 @@ const Book = ({ data, onChange }) => (
     <BookTop data={data} onChange={onChange} />
     <div className="book-title">{data.title}</div>
     <div className="book-authors">
-      {data.authors.map((author, i) => (
+      {data.authors && data.authors.map((author, i) => (
         <p key={`${data.id}-author-${i}`}>{author}</p>
       ))}
     </div>
