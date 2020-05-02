@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useBookSearchApi } from "./utils/useBookApi";
 import Book from "./Book";
-import * as BooksAPI from './utils/BooksAPI'
 
 const Search = () => {
   const { books, search, setSearch, updateBook } = useBookSearchApi();

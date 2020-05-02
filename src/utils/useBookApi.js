@@ -29,7 +29,7 @@ export const useBookSearchApi = () => {
   const [search, setSearch] = useState("");
 
   const updateBook = async (book, bookshelf) => {
-    const bookListWithUpdatedBook = await BooksAPI.update(book, bookshelf);
+    await BooksAPI.update(book, bookshelf);
 
     setBooks(
       books.map((b) =>
