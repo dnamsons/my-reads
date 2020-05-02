@@ -39,6 +39,10 @@ export const useBookSearchApi = () => {
   };
 
   useEffect(() => {
+    if (search === "") {
+      setBooks([]);
+      return;
+    }
     let ignore = false;
 
     const fetchData = async () => {
