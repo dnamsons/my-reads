@@ -42,11 +42,13 @@ export const useBookSearchApi = () => {
     let ignore = false;
 
     const fetchData = async () => {
-      const books = await BooksAPI.search(search).then((books) =>
-        Promise.all(books.map((book) => BooksAPI.get(book.id)))
+      const foundBooks = await BooksAPI.search(search).then((books) =>
+        Array.isArray(books)
+          ? Promise.all(books.map((book) => BooksAPI.get(book.id)))
+          : []
       );
 
-      if (!ignore) setBooks(books);
+      if (!ignore) setBooks(foundBooks);
     };
 
     search.length !== 0 && fetchData();
